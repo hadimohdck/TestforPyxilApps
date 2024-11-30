@@ -1,10 +1,12 @@
 package StepDefenitions;
 
+import io.cucumber.java.en.Then;
 import org.openqa.selenium.WebDriver;
 
 import PageObjects.counterpage;
 import Utils.TestContextSetup;
 import io.cucumber.java.en.Given;
+import org.testng.Assert;
 
 public class counterpageStepDefinitions {
 	
@@ -19,11 +21,14 @@ public class counterpageStepDefinitions {
 		this.cp=ts.pom.getcounterpage();	
 	}
 	
-	@Given("User clicks on plus button")
+	@Given("User clicks on plus button and verifies counter")
 	public void user_clicks_on_plus_button() throws InterruptedException {
-		Thread.sleep(5000);
+		Thread.sleep(15000);
+
+
 		this.cp.clickonplusbutton();
-		Thread.sleep(5000);
 	}
+
+
 
 }

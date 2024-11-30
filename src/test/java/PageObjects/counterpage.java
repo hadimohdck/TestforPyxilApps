@@ -11,7 +11,7 @@ public class counterpage {
 	
 	public WebDriver driver;
 	
-	By plusbutton=By.cssSelector("label#ftl-announcement-polite");
+
 	
 	public counterpage(WebDriver driver) {	
 		this.driver=driver;
@@ -19,36 +19,47 @@ public class counterpage {
 	}
 	public void clickonplusbutton() throws InterruptedException {
 		
-//	((JavascriptExecutor) driver).executeScript("arguments[0].style.visibility = 'visible';" +  // Make it visible
-//		    "arguments[0].style.position = 'absolute';" +   // Set position to absolute
-//		    "arguments[0].style.transform = 'none';" +      // Remove any transformations
-//		    "arguments[0].style.width = 'auto';" +          // Set width to auto (or any desired size)
-//		    "arguments[0].style.height = 'auto';" +         // Set height to auto (or any desired size)
-//		    "arguments[0].scrollIntoView(true);" +          // Scroll into view (if needed)
-//		    "arguments[0].click();", driver.findElement(plusbutton));
-		 // Locate the shadow host element
-		
 
-		JavascriptExecutor js = (JavascriptExecutor) driver;
 
-		// Set the canvas to be visible
-		js.executeScript(
-		    "document.querySelector('flt-scene-host > flt-scene > flt-canvas-container > canvas').style.visibility = 'visible';" +
-		    "document.querySelector('flt-scene-host > flt-scene > flt-canvas-container > canvas').style.display = 'block';"
-		);
 
-		// Now interact with the canvas
-		WebElement canvas = driver.findElement(By.cssSelector("flt-scene-host > flt-scene > flt-canvas-container > canvas"));
-		int xOffset = 380;
-		int yOffset = 580;
+		String script = "document.querySelector('flt-glass-pane').shadowRoot.querySelector('flt-semantics-placeholder').click();";
+		((JavascriptExecutor) driver).executeScript(script);
 
-		Actions actions = new Actions(driver);
-		actions.moveToElement(canvas, xOffset, yOffset).click().perform();
+		// Wait for the DOM to update
+		Thread.sleep(2000); // Adjust the sleep time as needed
 
-	
+		// Locate the "plus" button using XPath
+		WebElement plusButton = driver.findElement(By.xpath("//flt-semantics[contains(@aria-label, 'Increment')]"));
+
+		// Click the "plus" button
+
+		System.out.println("click executed");
+
+		// Locate the counter text element
+		WebElement counterNumberElement = driver.findElement(By.xpath("//flt-semantics[@role='text' and contains(@aria-label, 'You have pushed')]//following-sibling::flt-semantics[@role='text']"));
+
+
+		// Initialize the click counter
+		int clickCount = 0;
+
+		// Perform 5 clicks on the "plus" button
+		for (int i = 0; i < 5; i++) {
+			plusButton.click();
+			clickCount++;
+
+			// Retrieve the updated number displayed on the page
+			String displayedNumber = counterNumberElement.getAttribute("aria-label");
+			System.out.println(displayedNumber);
+
+			// Extract the actual number from the string (e.g., if it's part of a larger label)
+			int displayedCount = Integer.parseInt(displayedNumber);
+
+			// Validate that the displayed number matches the click count
+			if (displayedCount != clickCount) {
+				System.out.println("Mismatch detected! Click count: " + clickCount + ", Displayed count: " + displayedCount);
+			} else {
+				System.out.println("Click count matches: " + displayedCount);
+			}
+		}
 	}
-	// Use Actions to click
-	
-	
-
 }
