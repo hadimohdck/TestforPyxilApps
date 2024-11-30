@@ -31,9 +31,10 @@ public class TestBase {
 			{	driver=new FirefoxDriver();
 				System.getProperty("webdriver.gecho.driver",System.getProperty("user.dir")+"\\src\\test\\resources\\geckodriver.exe");			
 			}	
-			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+			driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 			driver.get(url);
-			
+			driver.manage().window().maximize();
+
 		}
 	    return driver;
 	    
